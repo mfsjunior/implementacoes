@@ -58,12 +58,12 @@ class ContratoController extends Controller
     public function store(){
        
         //$contrato = $request->all(); //precisa pegar os names identicos ao banco de dados vindo na request
-        $CSVvar = fopen("../storage/app/arquivos_baixados/06636765000107.csv", "r");
+        $CSVvar = fopen("../storage/app/public/arquivos_baixados/06636765000107.csv", "r");
 
         $cnpj = '06636765000107';
 
        
-        $file = fopen("../storage/app/arquivos_baixados/06636765000107.csv", "r");
+        $file = fopen("../storage/app/public/arquivos_baixados/06636765000107.csv", "r");
     
        //$header = fgetcsv($file, 1000, ";");
     
@@ -79,7 +79,7 @@ class ContratoController extends Controller
        Contrato::create([      
              `updated_at` => NULL,
              `created_at` => NULL,    
-             'unidade_responsavel' =>$row[0], 
+             'unidade_responsavel' =>"$row[0]", 
              'uasg'=>$row[1], 
              'id_item_pca'=>$row[2], 
              'categoria_item'=>$row[3], 
@@ -98,8 +98,7 @@ class ContratoController extends Controller
              'valor_unitario_estimado' =>$row[16], 
              'valor_total_estimado' =>$row[17], 
              'valor_orcamentario_estimado_exercicio' =>$row[18], 
-             'data_desejada' =>$row[19],
-             'cnpj' => $cnpj
+             'data_desejada' =>$row[19]
            
             ]);
             
