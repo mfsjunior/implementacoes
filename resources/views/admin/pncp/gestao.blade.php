@@ -45,7 +45,7 @@
     //Parte download do arquivo 
     // Initialize a file URL to the variable
     //$url = 'https://treina.pncp.gov.br/api/pncp/v1/orgaos/00394460000141/pca/2022/csv/';
-    $url_tratado = 'https://pncp.gov.br/api/pncp/v1/orgaos/'. $item["cnpj"] . '/pca/2023/csv/';
+    $url_tratado = 'https://pncp.gov.br/api/pncp/v1/orgaos/00394460000141/pca/2023/csv/';
     $url =  $url_tratado;
      
     // Initialize the cURL session
@@ -53,7 +53,7 @@
      
     // Initialize directory name where
     // file will be save
-    $dir = 'storage/arquivos_baixados/';
+    $dir = 'git arquivos_baixados/';
      
     
 

@@ -22,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //aqui eu vou compartilhar todos os dados para minhas views
        $categoriasMenu = Categoria::all();
-       view()->share('categoriasMenu', $categoriasMenu);
+     view()->share('categoriasMenu', $categoriasMenu);
     }
 }
