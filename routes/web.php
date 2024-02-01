@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Contrato;
 use App\Models\Categoria;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\CarrinhoController;
 use App\Http\Controllers\LoginController;
@@ -67,7 +68,15 @@ Route::get('/admin/pncp/{id}', [ContratoController::class, 'index'])->name('admi
 
 //Categoria
 Route::get('/admin/categoria', [ContratoController::class, 'categoria'])->name('admin.pncp.categoria');
+Route::get('/admin/categorias', [CategoriaController::class, 'listarCategorias'])->name('admin.pncp.listarcategorias');
+
 Route::get('/admin/categoria/store', [ContratoController::class, 'criarCategoria'])->name('admin.pncp.categoria.store');
+
+Route::post('/admin/pncp/categoriaitem', [ContratoController::class, 'salvarCategoriaItem'])->name('admin.pncp.categoria.item');
+
+Route::delete('/admin/pncp/delete/{id}', [CategoriaController::class, 'destroy'])->name('admin.pncp.delete');
+
+Route::post('/admin/pncp/edite', [CategoriaController::class, 'atualizarCategoria'])->name('admin.pncp.categoria.edite');
 
 
 
@@ -87,7 +96,7 @@ Route::get('/admin/pncp/listar', function () {
     return view('/admin/pncp/listar')->with('contratos', $contratos)->with('categorias', $categorias);
 })->name('admin.pncp.buscar');
 
-Route::post('welcome/addupdate/{id}','FormController@addUpdateData');
+
 
 /*
 Route::get('/gerencial/empresa', function (){

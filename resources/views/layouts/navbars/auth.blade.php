@@ -7,37 +7,40 @@
             </div>
         </a>
         <a href="" class="simple-text logo-normal">
-            {{ __('Projeto MENDES') }}
+            {{ __('Projeto NOVO') }}
         </a>
     </div>
     <div class="sidebar-wrapper">
         <ul class="nav">
             <li class="{{ $elementActive == 'dashboard' ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard', 'dashboard') }}">
-                    <i class="nc-icon nc-bank"></i>
+                <a href="{{ route('admin.dashboard') }}">
+                <i class="material-icons">dashboard</i>
                     <p>{{ __('Dashboard') }}</p>
                 </a>
             </li>
-            <li class="{{ $elementActive == 'user' || $elementActive == 'profile' ? 'active' : '' }}">
+            <li class="{{ $elementActive == 'listar' || $elementActive == 'active' ? 'active' : '' }}">
                 <a data-toggle="collapse" aria-expanded="true" href="#laravelExamples">
-                    <i class="nc-icon"><img src="{{ asset('/img/laravel.svg') }}"></i>
+                <i class="material-icons">assignment</i>
+                
+                
                     <p>
-                            {{ __('Laravel examples') }}
+                            {{ __('CONTRATOS') }}
                         <b class="caret"></b>
                     </p>
                 </a>
                 <div class="collapse show" id="laravelExamples">
                     <ul class="nav">
-                        <li class="{{ $elementActive == 'profile' ? 'active' : '' }}">
-                            <a href="{{ route('admin.dashboard') }}">
-                                <span class="sidebar-mini-icon">{{ __('UP') }}</span>
-                                <span class="sidebar-normal">{{ __(' User Profile ') }}</span>
+                        <li class="{{ $elementActive == 'listar' ? 'active' : '' }}">
+                        <a href="{{ route('admin.pncp.buscar') }}">
+                        <i class="material-icons">list</i>
+                                <span class="sidebar-normal">{{ __(' Listar Contratos ') }}</span>
                             </a>
                         </li>
-                        <li class="{{ $elementActive == 'user' ? 'active' : '' }}">
-                            <a href="{{ route('admin.dashboard', 'user') }}">
-                                <span class="sidebar-mini-icon">{{ __('U') }}</span>
-                                <span class="sidebar-normal">{{ __(' User Management ') }}</span>
+                        <li class="{{ $elementActive == 'categorias' ? 'active' : '' }}">
+                           
+                        <a href="{{ route('admin.pncp.listarcategorias') }}">
+                        <i class="material-icons">list</i>
+                                <span class="sidebar-normal">{{ __(' Listar Categorias ') }}</span>
                             </a>
                         </li>
                     </ul>
@@ -49,30 +52,9 @@
                     <p>{{ __('LISTAR CONTRATOS') }}</p>
                 </a>
             </li>
-            <li class="{{ $elementActive == 'map' ? 'active' : '' }}">
-                <a href="{{ route('admin.pncp.item', '9052') }}">
-                    <i class="nc-icon nc-pin-3"></i>
-                    <p>{{ __('Item') }}</p>
-                </a>
-            </li>
-            <li class="{{ $elementActive == 'notifications' ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard', 'notifications') }}">
-                    <i class="nc-icon nc-bell-55"></i>
-                    <p>{{ __('Notifications') }}</p>
-                </a>
-            </li>
-            <li class="{{ $elementActive == 'tables' ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard', 'tables') }}">
-                    <i class="nc-icon nc-tile-56"></i>
-                    <p>{{ __('Table List') }}</p>
-                </a>
-            </li>
-            <li class="{{ $elementActive == 'typography' ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard', 'typography') }}">
-                    <i class="nc-icon nc-caps-small"></i>
-                    <p>{{ __('Typography') }}</p>
-                </a>
-            </li>
+
+           
+            
           
         </ul>
     </div>

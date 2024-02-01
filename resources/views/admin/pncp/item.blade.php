@@ -2,7 +2,7 @@
     'class' => '',
     'elementActive' => 'item'
 ])
-@section('titulo', 'Listagem de Contratos')
+@section('titulo', 'Contrato individual')
 
 @section('conteudo2')
 

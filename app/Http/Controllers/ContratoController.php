@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contrato;
 use App\Models\Categoria;
+use App\Models\CategoriaItem;
 use Illuminate\Http\Request;
 
 class ContratoController extends Controller
@@ -177,6 +178,23 @@ class ContratoController extends Controller
         $input = $req->all();
         return $id;
     }
+
+
+    public function salvarCategoriaItem(Request $request)
+    {
+     
+       
+            $categoriaItem = $request->all(); //precisa pegar os names identicos ao banco de dados
+            $categoriaItem = CategoriaItem::create($categoriaItem); //Salva no Banco 
+           
+    
+            return redirect()->route('admin.pncp.buscar')->with('sucesso', 'Item adicionado com sucesso');
+    
+    
+       
+    }
+
+
 
 
 }
