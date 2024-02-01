@@ -71,10 +71,10 @@
      
    // It set an option for a cURL transfer
     curl_setopt($ch, CURLOPT_FILE, $fp);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// Essa foi a raiz do problema. Ao trazer para o laravel, precisei tirar a verficação do HTTPS
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+  curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// Essa foi a raiz do problema. Ao trazer para o laravel, precisei tirar a verficação do HTTPS
      /* 
    dd( $response2 = file_get_contents($url2));
         $dataArray2 = json_decode($response2, true);

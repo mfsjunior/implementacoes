@@ -78,13 +78,13 @@ h4.card-title.item {
     border-radius: 5px;
     box-shadow: 2px 6px 11px -8px #616161;
     padding: 16px;
-    color: #303F9F;
+    color: var(--cyan) !important;
 }
 
 .principal {
     font-size: 12px;
     font-weight: bold;
-    color: #303F9F;
+    color: var(--cyan) !important;
 }
 
 table.item-pncp tr {
@@ -111,4 +111,17 @@ table.item-pncp tr {
     color: #fff;
     padding: 6px 15px;
     text-align: center;
+}
+
+.select-wrapper {
+    width: 300px;
+}
+.select-wrapper input.select-dropdown {
+    font-family: inherit;
+    font-size: 12px;
+    text-align: left;
+}
+
+label.active {
+    font-size: 19px !important;
 }

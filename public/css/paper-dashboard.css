@@ -2501,7 +2501,7 @@ p.description {
 .text-primary,
 a.text-primary:focus,
 a.text-primary:hover {
-  color: #51cbce !important;
+  color: var(--cyan) !important;
 }
 
 .text-info,

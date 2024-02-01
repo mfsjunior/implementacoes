@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
 
@@ -55,11 +55,41 @@ class CategoriaController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Categoria $categoria)
+
+
+
+    public function listarCategorias(){
+    
+        
+         $categorias =  Categoria::all();
+
+
+        //$categorias = DB::table('categoriaitem')
+          //  ->leftJoin('categorias', 'categorias.id', '=', 'categoriaitem.id_categoria')
+           // ->get();
+       
+
+        return view('admin.pncp.listarcategoria', compact('categorias'));
+
+   }
+
+   public function destroy($id){
+
+        $categoria = Categoria::find($id);
+        $categoria->delete();
+        return redirect()->route('admin.pncp.listarcategorias')->with('sucesso', 'Categoria excluida com sucesso');
+    }
+
+
+
+    public function atualizarCategoria(Request $request)
     {
-        //
+
+       $categorias = $request->all(); //precisa pegar os names identicos ao banco de dados
+
+        $categoria = Categoria::find($categorias['id']); //Salva no Banco 
+        $categoria->update($categorias);
+        
+        return redirect()->route('admin.pncp.listarcategorias')->with('sucesso', 'atualizado com com sucesso"');
     }
 }

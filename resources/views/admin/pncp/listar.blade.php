@@ -52,7 +52,7 @@
                 <input
                 type="search"
                 
-                placeholder="Find user here"
+                placeholder="Buscar Contratatos"
                 name="search"
                 id="search" 
                 value="{{ request('search') }}"
@@ -102,8 +102,8 @@
               <tr>
                
                 @foreach ($contratos as $contrato)
-                <td>#{{$contrato->id}}</td>
-                <td>{{$contrato->unidade_responsavel}}</td>
+                <td><a href="{{ route('admin.pncp.item', $contrato->id) }}">#{{$contrato->id}}</a></td>
+                <td><a href="{{ route('admin.pncp.item', $contrato->id) }}">{{$contrato->unidade_responsavel}}</a></td>
                 <td>{{$contrato->uasg}}</td>
                 <td>{{$contrato->id_item_pca}}</td>
                 <td>{{$contrato->categoria_item}}</td>
@@ -116,18 +116,24 @@
                 <td>{{$contrato->valor_total_estimado}}</td>
           
                 <td>{{$contrato->data_desejada}}</td>
-                <td class="col s6">
+                <td>
                
                     
-            <form>
-              <select name="id_categoria">
+          <form action="{{route('admin.pncp.categoria.item')}}"  method="POST" enctype="multipart/form-data">
+                @csrf
+
+              <input type="hidden" name="id_usuario" value="{{auth()->user()->id}}">
+              <input type="hidden" name="id_contrato" value="{{$contrato->id}}">
+              
+             
+              <select name="id_categoria" data-dropup-auto="false" >
                     <option value="" disabled selected>Adicione a uma categoria</option>
                   @foreach($categorias as $c)
                     <option value="{{$c->id}}">{{ $c->nome }}</option>
                   @endforeach
       
               </select>
-              <input type="submit" id="add" class="btn btn-primary" onclick="addUpdateData(id)" value="Add"></button>
+              <input type="submit" id="add" class="btn btn-primary" onclick="addUpdateData(id)" value="adicionar"></button>
             </form>
             </td>
           </tr>
