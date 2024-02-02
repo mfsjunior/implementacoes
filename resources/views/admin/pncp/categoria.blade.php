@@ -12,7 +12,7 @@
             <form action="{{route('admin.pncp.categoria.store')}}" class="col s12" method="GET" enctype="multipart/form-data">
                 @csrf
 
-                <input type="hidden" name="id_user" value="{{auth()->user()->id}}"> 
+              <input type="hidden" name="id_usuario" value="{{auth()->user()->id}}"> 
               <div class="row">
                 <div class="input-field col s5">
                   <input placeholder="Nome da Categoria" id="nome" name="nome" type="text" class="validate">

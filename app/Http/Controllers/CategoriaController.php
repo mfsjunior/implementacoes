@@ -61,13 +61,17 @@ class CategoriaController extends Controller
     public function listarCategorias(){
     
         
-         $categorias =  Categoria::all();
+    
+    $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+   
+    /*  $categorias = DB::table('categoriaitem')
+            ->join('categorias', 'categorias.id', '=', 'categoriaitem.id_categoria')
+            ->select('categorias.*')
+            ->where('categoriaitem.id_usuario', '=', auth()->user()->id)
+            ->get();*/
+     
 
-
-        //$categorias = DB::table('categoriaitem')
-          //  ->leftJoin('categorias', 'categorias.id', '=', 'categoriaitem.id_categoria')
-           // ->get();
-       
+        
 
         return view('admin.pncp.listarcategoria', compact('categorias'));
 
@@ -75,7 +79,7 @@ class CategoriaController extends Controller
 
    public function destroy($id){
 
-        $categoria = Categoria::find($id);
+        $categoria = Categoria::find($id);  
         $categoria->delete();
         return redirect()->route('admin.pncp.listarcategorias')->with('sucesso', 'Categoria excluida com sucesso');
     }

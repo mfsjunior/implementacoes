@@ -157,8 +157,26 @@ class ContratoController extends Controller
     public function listarPNCP(){
     
         
-         $contratos = Contrato::paginate(5);//traz todos os registros
-         $categorias =  Categoria::all();
+        // $contratos = Contrato::where('id_usuario', auth()->user()->id)->paginate(5);//traz os registros paginados 
+
+         $contratos = DB::table('contratos')
+            ->join('categoriaitem', 'categoriaitem.id_contrato', '<>', 'contratos.id')
+            ->select('contratos.*')
+            ->where('categoriaitem.id_usuario', '=', auth()->user()->id)
+            ->get();
+
+
+
+            SELECT *
+FROM contratos
+WHERE not exists(
+SELECT * FROM 
+categoriaitem where categoriaitem.id_contrato = contratos.id AND
+categoriaitem.id_usuario = 1 )
+
+          
+         
+         $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();;
         
          return view('admin.pncp.listar', compact('contratos', 'categorias'));
 
