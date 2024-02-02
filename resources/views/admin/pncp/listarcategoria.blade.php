@@ -37,7 +37,7 @@
           </div>
         </div>
 
-
+        @include('admin.pncp.categoria')
       
         
          
