@@ -25,10 +25,29 @@
  
 
 
-  
-       
+    @if ($categorias->count() == 0)
+
+
+    <div class="row titulo categorias">    
+      <h3 class="left">Categorias</h3>
+      <div class="create-category">
+        <a  class="criarcat modal-trigger" href="#create">
+          
+          Criar Categoria
+        </a>   
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <h3 class="sem-contratos"> Você não tem categoria cadastrada</h3>
+      </div>
+    </div>
+    @include('admin.pncp.categoria')
+
+    @else
         <div class="row titulo categorias">    
-          <h4 class="left"></h4>
+          <h3 class="left">Categorias Cadastradas</h3>
           <div class="create-category">
             <a  class="criarcat modal-trigger" href="#create">
               
@@ -45,13 +64,15 @@
          
        
     
-    
+     
+  
+        
 
 <div class="col-md-12">
      
         <div class="card">
         <div class="card-header">
-            <h4 class="card-title"> Categorias Cadastradas</h4>
+           
         </div>
         <div class="card-body">
             <div class="table">
@@ -120,6 +141,7 @@
 </div>
 </div>
 
+@endif
 </div>
 
 </div>

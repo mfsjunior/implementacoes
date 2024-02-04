@@ -53,7 +53,7 @@
      
     // Initialize directory name where
     // file will be save
-    $dir = 'git arquivos_baixados/';
+    $dir = 'arquivos_baixados/';
      
     
 

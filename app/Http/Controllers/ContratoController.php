@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Contrato;
 use App\Models\Categoria;
 use App\Models\CategoriaItem;
@@ -156,27 +156,32 @@ class ContratoController extends Controller
 
     public function listarPNCP(){
     
+        //o listar daqui está no arquivo de ROTA
         
         // $contratos = Contrato::where('id_usuario', auth()->user()->id)->paginate(5);//traz os registros paginados 
 
-         $contratos = DB::table('contratos')
+   /*    $contratos = DB::table('contratos')
             ->join('categoriaitem', 'categoriaitem.id_contrato', '<>', 'contratos.id')
             ->select('contratos.*')
             ->where('categoriaitem.id_usuario', '=', auth()->user()->id)
             ->get();
+            
 
 
 
-            SELECT *
-FROM contratos
-WHERE not exists(
-SELECT * FROM 
-categoriaitem where categoriaitem.id_contrato = contratos.id AND
-categoriaitem.id_usuario = 1 )
 
-          
+
+            $contratos = DB::table('contratos')
+            ->whereNot(function (Builder $query) {
+                $query->select('categoriaitem')
+                ->where('categoriaitem.id_contrato ', '= ',  'contratos.id')
+                      ->Where('categoriaitem.id_usuario', '=', auth()->user()->id);
+            })
+            ->get();
+
+*/          
          
-         $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();;
+         $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
         
          return view('admin.pncp.listar', compact('contratos', 'categorias'));
 
@@ -212,6 +217,64 @@ categoriaitem.id_usuario = 1 )
        
     }
 
+
+
+    public function listarContratos(){
+    
+
+     
+            
+     
+        $contratos = DB::table('contratos')
+        ->join('categoriaitem', 'categoriaitem.id_contrato', '=', 'contratos.id')
+        ->join('categorias', 'categorias.id', '=', 'categoriaitem.id_categoria')
+        
+        ->distinct()
+        ->where('categoriaitem.id_usuario', '=', auth()->user()->id)       
+        ->paginate(5);
+
+
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+
+        return view('/admin/pncp/listarcontratos')->with('contratos', $contratos)->with('categorias', $categorias);
+
+    }
+
+
+
+    public function listarContratosFiltrados(Request $request){
+    
+        $busca = $request->all();
+       
+        $contratos = DB::table('contratos')
+        ->join('categoriaitem', 'categoriaitem.id_contrato', '=', 'contratos.id')
+        ->join('categorias', 'categorias.id', '=', 'categoriaitem.id_categoria')
+        
+        ->distinct()
+        ->where('categoriaitem.id_usuario', '=', auth()->user()->id)     
+        ->where('unidade_responsavel', 'like', '%' . $busca['search'] . '%')  
+        ->paginate(10);
+
+
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+   
+
+
+        return view('/admin/pncp/listarcontratosfiltrados')->with('contratos', $contratos)->with('categorias', $categorias);
+
+    }
+
+
+    public function deleteContrato($id_contrato){
+
+
+       //tem que ser o id do contato
+       $contrato =  CategoriaItem::where('id_contrato',$id_contrato)
+       ->where('id_usuario', auth()->user()->id)
+       ->delete();
+        
+        return redirect()->route('admin.pncp.meuscontratos')->with('sucesso', 'Contrato deletado com sucesso, essa ação não pode ser revertida');
+    }
 
 
 

@@ -28,7 +28,8 @@
               </div>
  
  
-              <button type="submit" class="waves-effect waves-green btn green right">Cadastrar</button><br>
+              <button type="submit" class="waves-effect waves-green btn green right">Cadastrar</button>
+              <a href="#!" class="modal-close waves-effect waves-green btn blue right">Cancelar</a>
 
             </form>
           </div>

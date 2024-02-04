@@ -46,11 +46,42 @@
                     </ul>
                 </div>
             </li>
-            <li class="{{ $elementActive == 'buscar' ? 'active' : '' }}">
-                <a href="{{ route('admin.pncp.buscar') }}">
+            <li class="{{ $elementActive == 'listarcontratos' ? 'active' : '' }}">
+                <a href="{{ route('admin.pncp.meuscontratos') }}">
                     <i class="nc-icon nc-diamond"></i>
-                    <p>{{ __('LISTAR CONTRATOS') }}</p>
+                    <p>{{ __('Meus contratos') }}</p>
                 </a>
+            </li>
+
+
+
+            <li class="{{ $elementActive == 'listar' || $elementActive == 'active' ? 'active' : '' }}">
+                <a data-toggle="collapse" aria-expanded="true" href="#compras">
+                <i class="material-icons">assignment</i>
+                
+                
+                    <p>
+                            {{ __('COMPRAS') }}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse show" id="compras">
+                    <ul class="nav">
+                        <li class="{{ $elementActive == 'listar' ? 'active' : '' }}">
+                        <a href="{{ route('admin.pncp.buscar') }}">
+                        <i class="material-icons">list</i>
+                                <span class="sidebar-normal">{{ __(' Listar Contratos ') }}</span>
+                            </a>
+                        </li>
+                        <li class="{{ $elementActive == 'categorias' ? 'active' : '' }}">
+                           
+                        <a href="{{ route('admin.pncp.listarcategorias') }}">
+                        <i class="material-icons">list</i>
+                                <span class="sidebar-normal">{{ __(' Listar Categorias ') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
            

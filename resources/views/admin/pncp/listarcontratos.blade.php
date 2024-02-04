@@ -1,8 +1,8 @@
 @extends('layouts.app', [
     'class' => '',
-    'elementActive' => 'listar'
+    'elementActive' => 'listarcontratos'
 ])
-@section('titulo', 'Listagem de Contratos')
+@section('titulo', 'Meus Contratos Salvos')
 
 @section('conteudo2')
 
@@ -28,7 +28,7 @@
   
        
         <div class="row titulo ">    
-          <h3 class="left">Contratos</h3>
+          <h3 class="left">Meus contratos</h3>
           <div class="create-category">
             <a  class="criarcat modal-trigger" href="#create">
               
@@ -37,25 +37,20 @@
           </div>
         </div>
 
-
-      
-        
-         
-        
-          @include('admin.pncp.categoria')
+        @include('admin.pncp.categoria')
 
        <nav class="bg-gradient-blue">
         <div class="nav-wrapper">
-          <form>
+          <form action="{{route('admin.pncp.meuscontratosfiltrados')}}"  method="POST" enctype="multipart/form-data">
+            @csrf
            
             <div class="input-field">
                 <input
                 type="search"
                 
-                placeholder="Buscar Contratatos"
+                placeholder="Buscar Contratos"
                 name="search"
                 id="search" 
-                value="{{ request('search') }}"
             >
               <label class="label-icon" for="search"><i class="material-icons">search</i></label>
               <i class="material-icons">close</i>
@@ -67,22 +62,44 @@
       </nav>     
 
     
-    
+      @if ($contratos->count() == 0)
+
+      <div class="container">
+        <div class="row">
+          <h3 class="sem-contratos"> Você não cadastrou nenhum contrato</h3>
+        </div>
+      </div>
+
+      @else
 
 <div class="col-md-12">
      
-        <div class="card">
+      <div class="card">
         <div class="card-header">
+          <div class="col-sm-12">
             
+            <div class="filter-group right">
+              
+              <select style="width:200px;" id="mylist" onchange="filtragem()" >
+                <option value="" disabled selected>Filtre por categoria</option>
+                @foreach($categorias as $c)
+                  <option>{{ $c->nome }}</option>
+                @endforeach 
+              </select>         
+       
+            </div>
+           
+          </div>
         </div>
         <div class="card-body">
             <div class="table">
             
         
-          <table class="table">
+          <table id="myTable" class="table">
             <thead class=" text-primary">
               <tr>
-                <th></th>
+                <th> CATEGORIA</th>
+                <th>#</th>
                <th> Unidade Responsável</th>
                <th> UASG</th>	
                <th> Id do item no PCA</th>	
@@ -93,6 +110,7 @@
                <th> Valor Unitário Estimado (R$)</th>	
                <th> Valor Total Estimado (R$)</th>	
                <th> Data Desejada</th>
+               
                <th>Ação</th>
                
               </tr>
@@ -102,6 +120,7 @@
               <tr>
                
                 @foreach ($contratos as $contrato)
+                <td>{{$contrato->nome}}</td>
                 <td><a href="{{ route('admin.pncp.item', $contrato->id) }}">#{{$contrato->id}}</a></td>
                 <td><a href="{{ route('admin.pncp.item', $contrato->id) }}">{{$contrato->unidade_responsavel}}</a></td>
                 <td>{{$contrato->uasg}}</td>
@@ -116,25 +135,11 @@
                 <td>{{$contrato->valor_total_estimado}}</td>
           
                 <td>{{$contrato->data_desejada}}</td>
-                <td>
-               
-                    
-          <form action="{{route('admin.pncp.categoria.item')}}"  method="POST" enctype="multipart/form-data">
-                @csrf
-
-              <input type="hidden" name="id_usuario" value="{{auth()->user()->id}}">
-              <input type="hidden" name="id_contrato" value="{{$contrato->id}}">
-              
-             
-              <select name="id_categoria" data-dropup-auto="false" >
-                    <option value="" disabled selected>Adicione a uma categoria</option>
-                  @foreach($categorias as $c)
-                    <option value="{{$c->id}}">{{ $c->nome }}</option>
-                  @endforeach
-      
-              </select>
-              <input type="submit" id="add" class="btn btn-primary" onclick="addUpdateData(id)" value="adicionar"></button>
-            </form>
+                
+                <td> 
+                  <a href="#delete-{{$contrato->id}}" class="btn-floating modal-trigger  waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                  @include('admin.pncp.deletecontrato')
+                </td>
             </td>
           </tr>
                @endforeach
@@ -162,15 +167,24 @@
 
 
 <div class="row center">
-{{$contratos->links('custom.pagination')}}
-</div>
-</div>
 
 </div>
+</div>
+
+@endif
+
+
+
+</div>
 
 </div>
 
 
 
+
+
+
+
+    
 
 @endsection

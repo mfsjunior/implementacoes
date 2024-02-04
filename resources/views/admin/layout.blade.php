@@ -63,12 +63,8 @@
     @stack('graficos')
 
 
-    <script>
-      $(function(){
-  $.post("welcome/addupdate/" . data, $('form').serialize(), function(response) {
-      alert(response);
-    }
-  });</script>
+
+  
 
 </body>
 </html>

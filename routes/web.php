@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContratoController;
+use App\Http\Controllers\ComprasController;
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -66,6 +67,19 @@ Route::delete('/admin/produto/delete/{id}', [ProdutoController::class, 'destroy'
 //individual  
 Route::get('/admin/pncp/{id}', [ContratoController::class, 'index'])->name('admin.pncp.item');
 
+Route::get('/admin/pncp/contratos/listarcontratos', [ContratoController::class, 'listarContratos'])->name('admin.pncp.meuscontratos');
+//chamada do search
+Route::post('/admin/pncp/contratos/listarcontratosfiltrados', [ContratoController::class, 'listarContratosFiltrados'])->name('admin.pncp.meuscontratosfiltrados');
+//delete contrato do meu rol 
+Route::delete('/admin/pncp/deletecontrato/{id}', [ContratoController::class, 'deleteContrato'])->name('admin.pncp.deletecontrato');
+
+
+//Compras 
+Route::get('/admin/compras/buscarcompras', [ComprasController::class, 'listarCompras'])->name('admin.compras.buscarcompras');
+
+
+
+
 //Categoria
 Route::get('/admin/categoria', [ContratoController::class, 'categoria'])->name('admin.pncp.categoria');
 Route::get('/admin/categorias', [CategoriaController::class, 'listarCategorias'])->name('admin.pncp.listarcategorias');
@@ -85,11 +99,44 @@ Route::get('/admin/pncp/listar', function () {
   
     // Check for search input
     if (request('search')) {
+
         $contratos = Contrato::where('unidade_responsavel', 'like', '%' . request('search') . '%')->paginate(15);
-          $categorias =  Categoria::all();
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+
+
     } else {
-        $contratos = Contrato::paginate(5);
-        $categorias =  Categoria::all();
+        //$contratos = Contrato::paginate(5);
+     
+
+
+        $contratos = DB::table('contratos')
+        ->whereNotExists(function ($query) {
+            $query->select(DB::raw(1))
+                  ->from('categoriaitem')
+                  ->whereRaw('categoriaitem.id_contrato  = contratos.id')
+                  ->whereRaw('categoriaitem.id_usuario =  ? ', [auth()->user()->id]);
+                  ;
+        })
+        ->paginate(5);
+
+        
+
+        /*$contratos = 
+        ::table('')
+        ->whereNot(function ( $query) {
+            $query->select(DB::raw(1))
+           // $query->select('categoriaitem')
+            ->from('categoriaitem')
+            ->where('categoriaitem.id_contrato ', '=',  'contratos.id')
+            ->Where('categoriaitem.id_usuario', '=', auth()->user()->id);
+        })
+        ->get();*/
+        
+        
+       // $categorias =  Categoria::all();
+
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+
         return view('/admin/pncp/listar')->with('contratos', $contratos)->with('categorias', $categorias);
     }
 

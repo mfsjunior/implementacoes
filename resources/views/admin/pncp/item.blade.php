@@ -19,7 +19,14 @@
        
     @endif
 
+    
+
     <div class="col-md-12">
+
+      <div class="row titulo ">    
+      <h3 class="left">Contrato CNPJ -  {{$contrato->cnpj}}</h3>
+      
+    </div>
      
         <div class="card">
             <div class="card-header">

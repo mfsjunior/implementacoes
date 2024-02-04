@@ -101,7 +101,8 @@ table.item-pncp tr {
 
 .create-category {
     position: absolute;
-    right: 75px;
+    right: 30px;
+  
 }
 
 .row.aviso.col.s12 {
@@ -114,7 +115,7 @@ table.item-pncp tr {
 }
 
 .select-wrapper {
-    width: 300px;
+    width: 200px;
 }
 .select-wrapper input.select-dropdown {
     font-family: inherit;
@@ -124,4 +125,29 @@ table.item-pncp tr {
 
 label.active {
     font-size: 19px !important;
+}
+
+a.modal-close.waves-effect.waves-green.btn.blue.right {
+    margin-right: 12px;
+}
+
+
+h3.sem-contratos {
+    font-size: 22px;
+    margin: 0 auto;
+    margin-top: 43px;
+    background: #F44336;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+input#search {
+    background:#dee2e6;
+}
+a.criarcat.modal-trigger {
+    background: #6bd098;
+    padding: 10px;
+    color: #fff;
+    border-radius: 10px;
 }

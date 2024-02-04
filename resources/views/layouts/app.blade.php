@@ -72,6 +72,27 @@
      <script src="{{asset('js/main.js')}}"></script>
     @stack('scripts')
 
+    <script>
+        function filtragem() {
+             var input, filter, table, tr, td, i;
+             input = document.getElementById("mylist");
+             filter = input.value.toUpperCase();
+             table = document.getElementById("myTable");
+             tr = table.getElementsByTagName("tr");
+             for (i = 0; i < tr.length; i++) {
+               td = tr[i].getElementsByTagName("td")[0];
+                //console.log(i, td); // add this to find out what you are comparing with
+               if (td) {
+                 if (td.innerHTML.toUpperCase() === filter) {  
+                   tr[i].style.display = "";
+                 } else {
+                   tr[i].style.display = "none";
+                 }
+               }
+             }
+           }
+               </script>
+
     @include('layouts.navbars.fixed-plugin-js')
 </body>
 

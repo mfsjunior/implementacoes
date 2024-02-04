@@ -50,7 +50,7 @@
 
 
 @else
-<h5>Seu carrinho possue {{$itens->count()}} produtos</h5>
+<h5>Seu carrinho possui {{$itens->count()}} produtos</h5>
 
 <table class="striped">
     <thead>
