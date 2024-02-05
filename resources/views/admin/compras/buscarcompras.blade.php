@@ -51,7 +51,7 @@
        
         
        
-        
+      /*  
         // Preenchendo a tabela com os dados do JSON
         foreach ($dataArray as $item){
     
@@ -71,8 +71,8 @@ echo "</td>";
 
  echo '</tr>';
 
-       
-    }
+      
+    } */
     
     // Fechando a tabela
     echo '</table>';
