@@ -97,6 +97,7 @@ table.item-pncp tr {
     width: 300px;
     background: #e0e0e08c;
     border-bottom: 1px solid #7575754d;
+    text-transform: uppercase;
 }
 
 .create-category {
@@ -133,7 +134,7 @@ a.modal-close.waves-effect.waves-green.btn.blue.right {
 
 
 h3.sem-contratos {
-    font-size: 22px;
+    font-size: 14px;
     margin: 0 auto;
     margin-top: 43px;
     background: #F44336;
@@ -150,4 +151,43 @@ a.criarcat.modal-trigger {
     padding: 10px;
     color: #fff;
     border-radius: 10px;
+}
+
+
+span.destaque-compra {
+    background: #e83e8c;
+    padding: 7px;
+    border-radius: 9px;
+    color: #FFF;
+    font-weight: bold;
+}
+
+span.destaque-contrato {
+    background: #51bcda;
+    padding: 7px;
+    border-radius: 9px;
+    color: #FFF;
+    font-weight: bold;
+}
+
+span.categoria-item {
+    position: fixed;
+    right: 42px;
+    top: 273px;
+    background: var(--info);
+    padding: 13px;
+    border-radius: 10px;
+}
+
+.categoria-item input.select-dropdown.dropdown-trigger {
+    color: white;
+    font-weight: bold;
+}
+
+.green {
+    background-color: #4CAF50 !important;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    padding: 10px;
 }

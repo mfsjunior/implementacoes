@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contrato;
 use App\Models\Categoria;
+use App\Models\CategoriaCompras;
 use App\Models\CategoriaItem;
 use Illuminate\Http\Request;
+use App\Jobs\ProcessContratos;
+use Illuminate\Support\Facades\Storage;
 
 class ContratoController extends Controller
 {
@@ -20,9 +23,13 @@ class ContratoController extends Controller
         // $categoria = Categoria::find($id);
     
         $contrato = Contrato::where('id', $id)->first();
+       
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)
+        ->where('categoria', 1)
+        ->get();
      
         
-          return view('admin.pncp.item', compact('contrato'));
+          return view('admin.pncp.item', compact('contrato', 'categorias'));
     
         
           
@@ -39,32 +46,21 @@ class ContratoController extends Controller
         //
     }
 
-    public function criarCategoria(Request $request)
-    {
-     
-       
-            $categoria = $request->all(); //precisa pegar os names identicos ao banco de dados
-            $categoria = Categoria::create($categoria); //Salva no Banco 
-           
-    
-            return redirect()->route('admin.pncp.buscar')->with('sucesso', 'Categoria criada com sucesso');
-    
-    
-       
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(){
        
-        //$contrato = $request->all(); //precisa pegar os names identicos ao banco de dados vindo na request
-        $CSVvar = fopen("../storage/app/public/arquivos_baixados/06636765000107.csv", "r");
+       /* //$contrato = $request->all(); //precisa pegar os names identicos ao banco de dados vindo na request
+        $CSVvar = fopen("arquivos_baixados/06636765000107.csv", "r");
 
         $cnpj = '06636765000107';
 
        
-        $file = fopen("../storage/app/public/arquivos_baixados/06636765000107.csv", "r");
+        //$file = fopen("../storage/app/public/arquivos_baixados/06636765000107.csv", "r");
+        $file = fopen("arquivos_baixados/06636765000107.csv", "r");
     
        //$header = fgetcsv($file, 1000, ";");
     
@@ -115,8 +111,23 @@ class ContratoController extends Controller
     
         
          //Salva no Banco 
+*/     
+        ProcessContratos::dispatch();
+       
+       // url('/');
 
-        // return redirect()->route('admin.listar')->with('sucesso', 'Dado inserido com sucesso');
+
+    
+
+
+       //dd($files = Storage::allFiles());
+       
+       
+     // $CSVvar = fopen( 'http://mendes-app.mendes/storage/arquivos_baixados/06636765000101.csv', "r");
+       
+    
+       // return redirect()->route('admin.listar')->with('sucesso', 'Dado inserido com sucesso');
+      //  return redirect()->route('admin.pncp.buscar')->with('sucesso', 'Na teoria está processando');
 
 
     }
@@ -181,7 +192,9 @@ class ContratoController extends Controller
 
 */          
          
-         $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)
+        ->where('categoria', 1)
+        ->get();
         
          return view('admin.pncp.listar', compact('contratos', 'categorias'));
 
@@ -227,14 +240,15 @@ class ContratoController extends Controller
      
         $contratos = DB::table('contratos')
         ->join('categoriaitem', 'categoriaitem.id_contrato', '=', 'contratos.id')
-        ->join('categorias', 'categorias.id', '=', 'categoriaitem.id_categoria')
-        
+        ->join('categorias', 'categorias.id', '=', 'categoriaitem.id_categoria') 
         ->distinct()
         ->where('categoriaitem.id_usuario', '=', auth()->user()->id)       
         ->paginate(5);
 
-
-        $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+       
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)
+        ->where('categoria', 1 )
+        ->get();
 
         return view('/admin/pncp/listarcontratos')->with('contratos', $contratos)->with('categorias', $categorias);
 
@@ -252,11 +266,18 @@ class ContratoController extends Controller
         
         ->distinct()
         ->where('categoriaitem.id_usuario', '=', auth()->user()->id)     
-        ->where('unidade_responsavel', 'like', '%' . $busca['search'] . '%')  
+        ->where('unidade_responsavel', 'like', '%' . request('search') . '%')  
+        ->orWhere('categoria_item', 'like', '%' . request('search') . '%')
+        ->orWhere('nome_futura_contratacao', 'like', '%' . request('search') . '%')
+        ->orWhere('nome_classificacao_superior', 'like', '%' . request('search') . '%')
+        ->orWhere('nome_pdm_item', 'like', '%' . request('search') . '%')
+        ->orWhere('cnpj', 'like','%' . request('search') . '%')
         ->paginate(10);
 
 
-        $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)
+        ->where('categoria', 1  )
+        ->get();
    
 
 
@@ -268,7 +289,7 @@ class ContratoController extends Controller
     public function deleteContrato($id_contrato){
 
 
-       //tem que ser o id do contato
+       //tem que ser o id do contrato
        $contrato =  CategoriaItem::where('id_contrato',$id_contrato)
        ->where('id_usuario', auth()->user()->id)
        ->delete();

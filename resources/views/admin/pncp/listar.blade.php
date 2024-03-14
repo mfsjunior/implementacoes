@@ -102,6 +102,7 @@
               <tr>
                
                 @foreach ($contratos as $contrato)
+                
                 <td><a href="{{ route('admin.pncp.item', $contrato->id) }}">#{{$contrato->id}}</a></td>
                 <td><a href="{{ route('admin.pncp.item', $contrato->id) }}">{{$contrato->unidade_responsavel}}</a></td>
                 <td>{{$contrato->uasg}}</td>

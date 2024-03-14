@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Contrato;
 use App\Models\Categoria;
+use App\Models\CategoriaCompras;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\SiteController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\ComprasController;
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -74,9 +76,61 @@ Route::post('/admin/pncp/contratos/listarcontratosfiltrados', [ContratoControlle
 Route::delete('/admin/pncp/deletecontrato/{id}', [ContratoController::class, 'deleteContrato'])->name('admin.pncp.deletecontrato');
 
 
-//Compras 
+//Compras   // buscar é responsável por inserir na base*************************************************************************************
 Route::get('/admin/compras/buscarcompras', [ComprasController::class, 'listarCompras'])->name('admin.compras.buscarcompras');
+Route::get('/admin/compras/listarcompras', [ComprasController::class, 'listarMinhasCompras'])->name('admin.compras.minhascompras');
+Route::delete('/admin/compras/delete/{id}', [ComprasController::class, 'deletaCompra'])->name('admin.compras.deletecompra');
+Route::post('/admin/compras/categoriaitem', [ComprasController::class, 'salvarCategoriaItem'])->name('admin.compras.categoria.item');
+//individual  
+Route::get('/admin/compras/item/{id}', [ComprasController::class, 'index'])->name('admin.compras.item');
 
+Route::post('/admin/compras/listarcomprasfiltradas', [ComprasController::class, 'listarComprasFiltradas'])->name('admin.compras.minhascomprasfiltradas');
+//compras  search 
+Route::get('/admin/compras/listar', function () {
+  
+    // Check for search input
+    if (request('search')) {
+
+        //$compras = Compras::where('unidade_responsavel', 'like', '%' . request('search') . '%')->paginate(15);
+        $compras = DB::table('compras')
+        ->where('objetoCompra', 'like', '%' . request('search') . '%')  
+        ->orWhere('nomeUnidade', 'like', '%' . request('search') . '%')
+        ->orWhere('ufSigla', 'like', '%' . request('search') . '%')
+        ->orWhere('ufNome', 'like', '%' . request('search') . '%')
+        ->orWhere('municipioNome', 'like', '%' . request('search') . '%')
+        ->orWhere('descricao', 'like', '%' . request('search') . '%')
+        ->orWhere('modoDisputaNome', 'like','%' . request('search') . '%')
+        ->orWhere('cnpj', 'like','%' . request('search') . '%')
+        ->paginate(10);
+       
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)
+        ->where('categoria', 2)
+        ->get();
+
+
+    } else {
+      
+       $compras = DB::table('compras')
+        ->whereNotExists(function ($query) {
+            $query->select(DB::raw(1))
+                  ->from('categoriaitem_compras')
+                  ->whereRaw('categoriaitem_compras.id_compra  = compras.id')
+                  ->whereRaw('categoriaitem_compras.id_usuario =  ? ', [auth()->user()->id]);
+                  ;
+        })
+        ->paginate(5);
+
+    
+
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)
+        ->where('categoria', 2)
+        ->get();
+
+        return view('/admin/compras/listar')->with('compras', $compras)->with('categorias', $categorias);
+    }
+
+    return view('/admin/compras/listar')->with('compras', $compras)->with('categorias', $categorias);
+})->name('admin.compras.buscar');
 
 
 
@@ -84,7 +138,7 @@ Route::get('/admin/compras/buscarcompras', [ComprasController::class, 'listarCom
 Route::get('/admin/categoria', [ContratoController::class, 'categoria'])->name('admin.pncp.categoria');
 Route::get('/admin/categorias', [CategoriaController::class, 'listarCategorias'])->name('admin.pncp.listarcategorias');
 
-Route::get('/admin/categoria/store', [ContratoController::class, 'criarCategoria'])->name('admin.pncp.categoria.store');
+Route::get('/admin/categoria/store', [CategoriaController::class, 'criarCategoria'])->name('admin.pncp.categoria.store');
 
 Route::post('/admin/pncp/categoriaitem', [ContratoController::class, 'salvarCategoriaItem'])->name('admin.pncp.categoria.item');
 
@@ -94,14 +148,25 @@ Route::post('/admin/pncp/edite', [CategoriaController::class, 'atualizarCategori
 
 
 
-//ADMIN search 
+//ADMIN search  Contratos
 Route::get('/admin/pncp/listar', function () {
   
     // Check for search input
     if (request('search')) {
 
-        $contratos = Contrato::where('unidade_responsavel', 'like', '%' . request('search') . '%')->paginate(15);
-        $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+        //$contratos = Contrato::where('unidade_responsavel', 'like', '%' . request('search') . '%')->paginate(15);
+        $contratos = DB::table('contratos')
+        ->where('unidade_responsavel', 'like', '%' . request('search') . '%')  
+        ->orWhere('categoria_item', 'like', '%' . request('search') . '%')
+        ->orWhere('nome_futura_contratacao', 'like', '%' . request('search') . '%')
+        ->orWhere('nome_classificacao_superior', 'like', '%' . request('search') . '%')
+        ->orWhere('nome_pdm_item', 'like', '%' . request('search') . '%')
+        ->orWhere('cnpj', 'like','%' . request('search') . '%')
+        ->paginate(5);
+        
+        $categorias =  Categoria::where('id_usuario', auth()->user()->id)
+        ->where('categoria', 1)
+        ->get();
 
 
     } else {
@@ -135,7 +200,9 @@ Route::get('/admin/pncp/listar', function () {
         
        // $categorias =  Categoria::all();
 
-        $categorias =  Categoria::where('id_usuario', auth()->user()->id)->get();
+       $categorias =  Categoria::where('id_usuario', auth()->user()->id)
+       ->where('categoria', 1)
+       ->get();
 
         return view('/admin/pncp/listar')->with('contratos', $contratos)->with('categorias', $categorias);
     }

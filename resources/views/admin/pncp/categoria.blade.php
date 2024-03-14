@@ -26,7 +26,18 @@
                   <label for="password"></label>
                 </div>
               </div>
- 
+
+              <div class="row">
+                <div class="input-field col s12">
+               
+                  <select name="categoria">
+                      <option value="" disabled selected>Escolha um ou mais opções</option>
+                      <option value="1">Contratos</option>
+                      <option value="2">Compras</option>
+                    </select>
+                    <label for="categorias"></label>
+                </div>
+              </div>
  
               <button type="submit" class="waves-effect waves-green btn green right">Cadastrar</button>
               <a href="#!" class="modal-close waves-effect waves-green btn blue right">Cancelar</a>

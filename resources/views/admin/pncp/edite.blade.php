@@ -26,6 +26,25 @@
                     <label >Descrição</label>
                   </div>
                 </div>
+                
+                <div class="row">
+                  <div class="input-field col s12">
+                 
+                    <select name="categoria">
+                        <option value="{{$categoria->categoria}}" selected>{{$categoria->categoria == 1? "CONTRATOS": "COMPRAS"}}</option>
+                      
+                        @if ($categoria->categoria == 1))
+                          <option value="2">Compras</option>
+                        @endif
+
+                        @if ($categoria->categoria == 2))
+                          <option value="1">Contratos</option>
+                        @endif
+                      
+                      </select>
+                      <label for="categorias"></label>
+                  </div>
+                </div>
 
             <button type="submit" class="waves-effect waves-green btn red right">salvar</button>
             <a href="#!" class="modal-close waves-effect waves-green btn blue right">Cancelar</a>

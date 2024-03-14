@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Categoria;
+use App\Models\CategoriaItem;
+use App\Models\CategoriaItemCompras;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
@@ -77,11 +79,28 @@ class CategoriaController extends Controller
 
    }
 
-   public function destroy($id){
+   public function destroy($id){// destroi item da categoria e nãoa  categoria
 
-        $categoria = Categoria::find($id);  
-        $categoria->delete();
-        return redirect()->route('admin.pncp.listarcategorias')->with('sucesso', 'Categoria excluida com sucesso');
+        $categoria = Categoria::findOrFail($id);  //achando ou não 
+ 
+        if($categoria->delete()){
+        
+        CategoriaItemCompras::where('id_categoria',$id)
+        ->where('id_usuario', auth()->user()->id)
+        ->delete();
+
+        CategoriaItem::where('id_contrato',$id)
+        ->where('id_usuario', auth()->user()->id)
+        ->delete();
+        return redirect()->route('admin.pncp.listarcategorias')->with('sucesso', 'Categoria excluída com sucesso. Os itens associados a ela também foram excluídos!');
+
+        }else{
+        
+            return back()->withInput()->with('Atenção', 'Categoria não foi deletada');
+        }
+
+       
+      //  return back()->withInput()->with('sucesso', 'Categoria excluída com sucesso');
     }
 
 
@@ -95,5 +114,23 @@ class CategoriaController extends Controller
         $categoria->update($categorias);
         
         return redirect()->route('admin.pncp.listarcategorias')->with('sucesso', 'atualizado com com sucesso"');
+    }
+
+    public function criarCategoria(Request $request)
+    {
+     
+      // dd($request->categoria);
+       
+       
+       
+        $categoria = $request->all(); //precisa pegar os names identicos ao banco de dados
+        $categoria = Categoria::create($categoria); //Salva no Banco 
+    
+        
+        return redirect()->route('admin.pncp.listarcategorias')->with('sucesso', 'Categoria criada com sucesso');
+
+       
+    
+       
     }
 }

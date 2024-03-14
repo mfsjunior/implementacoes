@@ -34,7 +34,7 @@ return new class extends Migration
            $table->double('valor_total_estimado');    
            $table->double('valor_orcamentario_estimado_exercicio');
            $table->string('data_desejada');   
-           $table->string('cpnj');      
+           $table->string('cnpj');      
            
         });
     }

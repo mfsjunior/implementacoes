@@ -96,7 +96,7 @@
             
         
           <table id="myTable" class="table">
-            <thead class=" text-primary">
+            <thead class="text-primary">
               <tr>
                 <th> CATEGORIA</th>
                 <th>#</th>
@@ -121,8 +121,8 @@
                
                 @foreach ($contratos as $contrato)
                 <td>{{$contrato->nome}}</td>
-                <td><a href="{{ route('admin.pncp.item', $contrato->id) }}">#{{$contrato->id}}</a></td>
-                <td><a href="{{ route('admin.pncp.item', $contrato->id) }}">{{$contrato->unidade_responsavel}}</a></td>
+                <td><a href="{{ route('admin.pncp.item', $contrato->id_contrato) }}">#{{$contrato->id_contrato}}</a></td>
+                <td><a href="{{ route('admin.pncp.item', $contrato->id_contrato) }}">{{$contrato->unidade_responsavel}}</a></td>
                 <td>{{$contrato->uasg}}</td>
                 <td>{{$contrato->id_item_pca}}</td>
                 <td>{{$contrato->categoria_item}}</td>

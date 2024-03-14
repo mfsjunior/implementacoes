@@ -84,6 +84,7 @@
                 <th>#</th>
                <th> Nome da Categoria</th>
                <th> Descrição</th>	
+               <th> Tipo</th>	
                <th> Ação</th>	
         
                
@@ -95,9 +96,10 @@
                
                 @foreach ($categorias as $categoria)
                 <tr>
-                <td></td>
+                <td>{{$categoria->id}}</td>
                 <td>{{$categoria->nome}}</td>
                 <td>{{$categoria->descricao}}</td>
+                <td><span class="destaque-{{$categoria->categoria == 1? "contrato": "compra"}}">{{$categoria->categoria == 1? "CONTRATOS": "COMPRAS"}}</span></td>  
                 <td>
                 
                 <a  href="#edite-{{$categoria->id}}" class="btn-floating modal-trigger  waves-effect waves-light orange"><i class="material-icons">mode_edit</i></a>

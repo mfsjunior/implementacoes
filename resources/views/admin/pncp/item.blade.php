@@ -31,9 +31,25 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title item">{{$contrato->unidade_responsavel . " -  CNPJ". $contrato->cnpj}}</h4>
-
-                
             </div>
+            <span class="categoria-item">              
+              <form action="{{route('admin.pncp.categoria.item')}}"  method="POST" enctype="multipart/form-data">
+                    @csrf
+        
+                  <input type="hidden" name="id_usuario" value="{{auth()->user()->id}}">
+                  <input type="hidden" name="id_contrato" value="{{$contrato->id}}">
+                  
+                 
+                  <select name="id_categoria" data-dropup-auto="false" >
+                        <option value="" disabled selected>Adicione a uma categoria</option>
+                      @foreach($categorias as $c)
+                        <option value="{{$c->id}}">{{ $c->nome }}</option>
+                      @endforeach
+          
+                  </select>
+                  <input type="submit" id="add" class="btn btn-primary"  value="adicionar"></button>
+                </form>
+              </span>
   
             <div class="card-body">
 
